@@ -1,34 +1,62 @@
 package com.example.repositories
 
+import com.example.database.MovieObject
 import com.example.interfaces.MovieRepository
 import com.example.models.Movie
+import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.transactions.transaction
 import java.util.*
 
 
-class MovieRepositoryImpl(private val movieList: MutableList<Movie>): MovieRepository {
 
-    override suspend fun getAll(): List<Movie> = movieList
+class MovieRepositoryImpl: MovieRepository {
 
-    override fun getById(id: UUID): Movie? = movieList.find { movie -> movie.id == id }
+    override suspend fun getAll(): List<Movie> {
+        return transaction {
+            MovieObject.selectAll().map {
+                Movie(it[MovieObject.uuid], it[MovieObject.name])
+            }
+        }
+    }
+
+    override fun getById(id: UUID): Movie? {
+        val movieRetrieved = transaction {
+            MovieObject.select(MovieObject.uuid eq id).firstOrNull()
+        } ?: return null
+
+        return Movie(movieRetrieved[MovieObject.uuid], movieRetrieved[MovieObject.name])
+    }
 
     override suspend fun create(movie: Movie): Movie {
-        movieList.add(movie)
+        transaction {
+            MovieObject.insert {
+                it[uuid] = movie.id
+                it[name] = movie.name
+            }
+        }
 
         return movie
     }
 
     override suspend fun update(id: UUID, movie: Movie): Movie? {
-        val movieRetrieved = getById(id) ?: return null
-        val updatedMovie = movie.copy(id = id)
+        transaction {
+            MovieObject.select(MovieObject.uuid eq id).firstOrNull()
+        } ?: return null
 
-        Collections.replaceAll(movieList, movieRetrieved, updatedMovie)
+        transaction {
+            MovieObject.update ({ MovieObject.uuid eq id }) {
+                it[name] = movie.name
+            }
+        }
 
-        return updatedMovie
+        return Movie(id = id, name = movie.name)
     }
 
     override suspend fun delete(id: UUID) {
-        val movieRetrieved = getById(id)
-
-        movieList.remove(movieRetrieved)
+        transaction {
+            MovieObject.deleteWhere{MovieObject.uuid eq id}
+        }
     }
+
 }

@@ -24,6 +24,8 @@ repositories {
 dependencies {
     testImplementation("io.mockk:mockk:1.13.4")
     implementation ("io.insert-koin:koin-ktor:3.3.1")
+    implementation("org.postgresql:postgresql:42.5.3")
+    implementation("org.jetbrains.exposed:exposed-jdbc:0.30.1")
     implementation("io.insert-koin:koin-test:3.3.3")
     implementation("io.ktor:ktor-serialization-gson:$ktorVersion")
     implementation("org.apache.kafka:kafka-clients:3.3.1")

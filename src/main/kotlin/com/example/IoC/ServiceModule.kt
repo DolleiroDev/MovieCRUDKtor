@@ -18,11 +18,8 @@ val serviceModules = module {
     single { MovieController(get()) }
     single{ MovieService(get(), get())}
     single{ StockService(get())}
-    single<MovieRepository>{ MovieRepositoryImpl(get(named(("movieList"))))}
+    single<MovieRepository> { MovieRepositoryImpl()}
     single<StockRepository> { StockRepositoryImpl(get(named("stockList")))}
-    single(named("movieList")){
-        mutableListOf<Movie>()
-    }
     single(named("stockList")){
         mutableListOf<Movie>()
     }

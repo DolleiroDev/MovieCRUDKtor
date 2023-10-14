@@ -1,5 +1,17 @@
 version: '2'
 services:
+  db:
+    build:
+      context: src/main/Docker
+      dockerfile: db.Dockerfile
+    volumes:
+      - ./var/pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=postgres
   zookeeper:
     image: wurstmeister/zookeeper
     ports:

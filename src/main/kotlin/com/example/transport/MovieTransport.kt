@@ -9,39 +9,31 @@ data class CreateMovieRequest(
 
 data class MovieRequest(
     val name: String,
-    val categories: List<String>,
-    val amount: Double,
 ) {
     companion object {
         fun fromMovie(movie: Movie) = MovieRequest(
-            name = movie.name,
-            categories = movie.categories,
-            amount = movie.amount
+            name = movie.name
         )
     }
     fun toMovie() = Movie(
-        name = name,
-        categories = categories,
-        amount = amount,
+        name = name
     )
 }
 
 data class CreateMovieResponse(
-    val movie: MovieResponse,
+    val movie: MovieResponse
 )
 
 data class MovieResponse(
     val id: UUID,
     val name: String,
-    val categories: List<String>,
-    val amount: Double
+
 ) {
     companion object {
         fun fromMovie(movie: Movie) = MovieResponse(
             id = movie.id,
             name = movie.name,
-            categories = movie.categories,
-            amount = movie.amount
+
         )
     }
 }
