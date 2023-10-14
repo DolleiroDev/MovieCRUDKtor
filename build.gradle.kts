@@ -22,6 +22,7 @@ repositories {
 }
 
 dependencies {
+    implementation("au.com.dius:pact-jvm-provider-junit5:4.0.10")
     testImplementation("io.mockk:mockk:1.13.4")
     implementation ("io.insert-koin:koin-ktor:3.3.1")
     implementation("org.postgresql:postgresql:42.5.3")

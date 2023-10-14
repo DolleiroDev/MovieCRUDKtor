@@ -16,18 +16,15 @@ private val service = MovieService(repository, movieCreatedProducer)
 
 private val movie = Movie(
     id = UUID.fromString("cff82b8b-b05c-4c00-866a-cc7f79cc972e"),
-    name = "Scream",
-    categories = listOf("Horror"),
-    amount = 12.4
+    name = "Scream"
 
 )
 
 private val movieList = mutableListOf(
-    Movie(id = UUID.fromString("9709ab56-269f-47bd-a46b-6f0d045dab23"), name = "The Butterfly Effect",
-        categories = listOf("Drama"), amount = 31.12)
+    Movie(id = UUID.fromString("9709ab56-269f-47bd-a46b-6f0d045dab23"), name = "The Butterfly Effect")
 )
 
-class MovieObjectServiceTest {
+class MovieServiceTest {
 
     @Test
     fun `should return a list with movies` () = runBlocking {
